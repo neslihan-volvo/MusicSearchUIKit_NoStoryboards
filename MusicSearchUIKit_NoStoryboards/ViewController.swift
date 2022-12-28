@@ -49,8 +49,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             
             @MainActor in
             cell.musicImage.image = await getImage(url: musicItem.artworkUrl60)
-            //cell.musicImage.clipsToBounds = true
-            //cell.musicImage.layer.cornerRadius = 10
         }
         imageTasks[indexPath] = myTask
         return cell
@@ -59,8 +57,13 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         return CGSize(width: (view.frame.size.width-16), height: 60)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //collectionView.addGestureRecognizer(<#T##gestureRecognizer: UIGestureRecognizer##UIGestureRecognizer#>)
-        //collectionView.deselectItem(at: indexPath, animated: true)
+        guard let musicItem = viewModel.state.results?[indexPath.row] else {
+            fatalError("Oh no should not happen")
+        }
+        let detailViewController = DetailViewController()
+        detailViewController.musicItem = musicItem
+        //self.present(detailViewController, animated: true)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
     func getImage(url: String) async -> UIImage {
         var image = UIImage()
